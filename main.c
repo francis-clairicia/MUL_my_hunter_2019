@@ -25,7 +25,7 @@ int main(int ac, char **av)
         if (my_strcmp(av[1], "-h") == 0)
             return (print_usage());
     }
-    window = create_window("My hunter", 800, 600);
+    window = create_window("My hunter", window_size.x, window_size.y);
     my_hunter(window);
     sfRenderWindow_destroy(window);
     return (0);

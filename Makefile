@@ -8,17 +8,18 @@
 MAIN	=	main.c
 
 SRC		=	src/my_hunter.c				\
-			src/sprite/create_sprite.c	\
-			src/sprite/animate_sprite.c	\
-			src/sprite/resize_sprite.c	\
-			src/sprite/move_sprite.c
+			src/analyse_events.c		\
+			src/manage_mouse_click.c	\
+			src/duck.c					\
+			src/object/create_object.c	\
+			src/object/animate_object.c	\
+			src/object/resize_object.c	\
+			src/object/move_object.c
 
 CSFML	=	csfml/framebuffer.c			\
 			csfml/create_window.c		\
 			csfml/put_pixel.c			\
 			csfml/draw_square.c			\
-			csfml/analyse_events.c		\
-			csfml/manage_mouse_click.c	\
 			csfml/clock.c
 
 CFLAGS	=	-I./include/ -Wall -Wextra -Werror

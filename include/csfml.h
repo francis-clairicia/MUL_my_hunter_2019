@@ -27,10 +27,6 @@ void framebuffer_destroy(framebuffer_t *fb);
 void put_pixel(framebuffer_t *f, unsigned int x, unsigned int y, sfColor color);
 void draw_square(framebuffer_t *framebuffer, sfVector2u position,
     unsigned int size, sfColor color);
-void fill_framebuffer(framebuffer_t *f, sfColor color);
-
 int elapsed_time(float seconds, sfClock *clock);
-void analyse_events(sfRenderWindow *window);
-void manage_mouse_click(sfMouseButtonEvent event);
 
 #endif
