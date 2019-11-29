@@ -10,7 +10,7 @@
 
 char *convert_to_base(int nbr, char const *base)
 {
-    linked_list_t *result = NULL;
+    list_t *result = NULL;
     char *str_result = NULL;
     int nb_base = my_strlen(base);
     int negative_result = (nbr < 0);
@@ -18,13 +18,13 @@ char *convert_to_base(int nbr, char const *base)
     if (nbr < 0)
         nbr = -nbr;
     while (nbr != 0 || result == NULL) {
-        my_put_char_in_list(&result, base[nbr % nb_base]);
+        my_put_in_list(&result, base[nbr % nb_base]);
         nbr /= nb_base;
     }
     if (negative_result)
-        my_put_char_in_list(&result, '-');
-    str_result = my_list_to_string(result);
-    my_free_list(&result);
+        my_put_in_list(&result, '-');
+    str_result = my_list_to_str(result);
+    my_free_list(&result, 0);
     return (str_result);
 }
 

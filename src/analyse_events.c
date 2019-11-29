@@ -5,17 +5,18 @@
 ** Event handler
 */
 
-#include <my_hunter.h>
+#include "my_hunter.h"
 
-void analyse_events(sfRenderWindow *window, duck_t *duck)
+void analyse_events(sfRenderWindow *window, pointers_t *ptrs)
 {
     sfEvent event;
 
     while (sfRenderWindow_pollEvent(window, &event)) {
         if (event.type == sfEvtClosed)
             sfRenderWindow_close(window);
-        if (event.type == sfEvtMouseButtonPressed
-        || event.type == sfEvtMouseButtonReleased)
-            manage_mouse_click(event.mouseButton, duck);
+        if (event.type == sfEvtMouseButtonPressed)
+            manage_mouse_click(event.mouseButton, ptrs);
     }
+    move_duck_list(ptrs->duck_list, sfRenderWindow_getSize(window));
+    move_cursor(ptrs->cursor, sfMouse_getPositionRenderWindow(window));
 }

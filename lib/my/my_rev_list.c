@@ -7,11 +7,11 @@
 
 #include <mylist.h>
 
-void my_rev_list(linked_list_t **begin)
+void my_rev_list(list_t **begin)
 {
-    linked_list_t *tmp = *begin;
+    list_t *tmp = *begin;
     int size_list = my_list_size(*begin);
-    linked_list_t **arr = malloc(sizeof(linked_list_t *) * size_list);
+    list_t **arr = malloc(sizeof(list_t *) * size_list);
     int i = 0;
 
     while (tmp != NULL) {

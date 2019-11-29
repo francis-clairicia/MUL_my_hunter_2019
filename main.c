@@ -5,7 +5,7 @@
 ** main.c
 */
 
-#include <my_hunter.h>
+#include "my_hunter.h"
 
 static int print_usage(void)
 {
@@ -17,15 +17,31 @@ static int print_usage(void)
     return (0);
 }
 
-int main(int ac, char **av)
+static int valid_environment(char **envp)
+{
+    int i = 0;
+
+    if (envp[0] == NULL)
+        return (0);
+    while (envp[i] != NULL) {
+        if (my_strncmp(envp[i], "DISPLAY", my_strlen("DISPLAY")) == 0)
+            return (1);
+        i += 1;
+    }
+    return (0);
+}
+
+int main(int ac, char **av, char **envp)
 {
     sfRenderWindow *window;
 
+    if (!valid_environment(envp))
+        return (84);
     if (ac >= 2) {
         if (my_strcmp(av[1], "-h") == 0)
             return (print_usage());
     }
-    window = create_window("My hunter", window_size.x, window_size.y);
+    window = create_window("My hunter", size_window.x, size_window.y);
     my_hunter(window);
     sfRenderWindow_destroy(window);
     return (0);

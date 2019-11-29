@@ -5,68 +5,80 @@
 ** Main for window
 */
 
-#include <my_hunter.h>
+#include "my_hunter.h"
+#include <stdio.h>
 
-static object_list_t *init_all_objects(char const *spritesheet)
+static pointers_t *init_all_pointers(void)
 {
-    object_list_t *s = malloc(sizeof(object_list_t));
+    pointers_t *ptrs = malloc(sizeof(pointers_t));
 
-    s->duck = create_object(spritesheet, duck_info, 3);
-    s->bg = create_object(spritesheet, background_info, 1);
-    s->cursor = create_object(spritesheet, cursor_info, 1);
-    s->hit[0] = create_object(spritesheet, hit_info[0], 1);
-    s->hit[1] = create_object(spritesheet, hit_info[1], 1);
-    return (s);
+    ptrs->bg = init_background();
+    ptrs->cursor = init_cursor();
+    ptrs->duck_list = my_list(1, (long)init_duck(30));
+    ptrs->score = init_score();
+    ptrs->shot = init_shot();
+    ptrs->life = init_life(3);
+    return (ptrs);
 }
 
-static void draw_all_objects(sfRenderWindow *window, object_list_t *object_list)
+static void defeated(sfRenderWindow *window)
 {
-    sfColor bg_color = {94, 204, 236, 255};
+    sfText *text = sfText_create();
+    sfFont *font = sfFont_createFromFile("font/retro.ttf");
+    char msg[] = "LOOOOSE !!!";
+    int size_character = 80;
+    sfVector2f pos = {300, 100};
 
-    sfRenderWindow_clear(window, bg_color);
-    sfRenderWindow_drawSprite(window, object_list->duck->sprite, NULL);
-    sfRenderWindow_drawSprite(window, object_list->bg->sprite, NULL);
-    sfRenderWindow_drawSprite(window, object_list->hit[0]->sprite, NULL);
-    sfRenderWindow_drawSprite(window, object_list->hit[1]->sprite, NULL);
-    sfRenderWindow_drawSprite(window, object_list->cursor->sprite, NULL);
-    sfRenderWindow_display(window);
+    sfText_setFont(text, font);
+    sfText_setString(text, msg);
+    sfText_setCharacterSize(text, size_character);
+    sfText_setPosition(text, pos);
+    sfRenderWindow_drawText(window, text, NULL);
+    sfText_destroy(text);
+    sfFont_destroy(font);
 }
 
-static void destroy_all_objects(object_list_t *object_list)
+static void draw_all_objects(sfRenderWindow *window, pointers_t *ptrs,
+    int game_continue)
 {
-    destroy_object(object_list->duck);
-    destroy_object(object_list->bg);
-    destroy_object(object_list->cursor);
-    destroy_object(object_list->hit[0]);
-    destroy_object(object_list->hit[1]);
-    free(object_list);
+    sfRenderWindow_clear(window, sfColor_fromRGB(94, 204, 236));
+    if (game_continue)
+        draw_duck_list(window, ptrs->duck_list);
+    draw_background(window, ptrs->bg);
+    draw_score(window, ptrs->score);
+    draw_shot(window, ptrs->shot);
+    draw_life(window, ptrs->life);
+    draw_cursor(window, ptrs->cursor);
+    if (!game_continue)
+        defeated(window);
 }
 
-static void move_cursor(sfRenderWindow *window, object_t *cursor)
+static void destroy_all_pointers(pointers_t *ptrs)
 {
-    sfVector2i pos = sfMouse_getPositionRenderWindow(window);
-    float cursor_x = pos.x - (cursor_info.size.x / 2);
-    float cursor_y = pos.y - (cursor_info.size.y / 2);
-    sfVector2f cursor_pos = {cursor_x, cursor_y};
-
-    sfSprite_setPosition(cursor->sprite, cursor_pos);
+    destroy_background(ptrs->bg);
+    destroy_cursor(ptrs->cursor);
+    destroy_duck_list(ptrs->duck_list);
+    destroy_score(ptrs->score);
+    destroy_shot(ptrs->shot);
+    destroy_life(ptrs->life);
+    free(ptrs);
 }
 
 void my_hunter(sfRenderWindow *window)
 {
-    object_list_t *object_list = init_all_objects("img/spritesheet.png");
-    duck_t duck;
+    pointers_t *ptrs = init_all_pointers();
     sfClock *clock = sfClock_create();
+    int game_continue = 1;
 
     sfRenderWindow_setMouseCursorVisible(window, sfFalse);
-    init_duck(&duck, object_list->duck);
     while (sfRenderWindow_isOpen(window)) {
-        move_cursor(window, object_list->cursor);
-        analyse_events(window, &duck);
-        draw_all_objects(window, object_list);
-        move_object(object_list->duck, duck.move.x, duck.move.y);
+        draw_all_objects(window, ptrs, game_continue);
+        sfRenderWindow_display(window);
         if (elapsed_time(100, clock))
-            animate_duck(&duck);
+            animate_duck_list(ptrs->duck_list);
+        analyse_events(window, ptrs);
+        game_continue = manage_gameplay(ptrs);
     }
-    destroy_all_objects(object_list);
+    sfClock_destroy(clock);
+    destroy_all_pointers(ptrs);
 }

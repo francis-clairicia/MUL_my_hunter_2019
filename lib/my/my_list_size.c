@@ -7,7 +7,7 @@
 
 #include <mylist.h>
 
-int my_list_size(linked_list_t const *begin)
+int my_list_size(list_t *begin)
 {
     int size = 0;
 

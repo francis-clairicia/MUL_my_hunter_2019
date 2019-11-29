@@ -5,27 +5,30 @@
 ** Header for linked list functions
 */
 
-#include <stdlib.h>
-#include <my.h>
-
 #ifndef HEADER_MY_LIST
 #define HEADER_MY_LIST
 
+#include <stdlib.h>
+#include "my.h"
+
 typedef struct linked_list
 {
-    int number;
-    char character;
-    char *string;
+    long data;
+    struct linked_list *previous;
     struct linked_list *next;
-} linked_list_t;
+} list_t;
 
-int my_list_size(linked_list_t const *begin);
-int my_put_char_in_list(linked_list_t **list, char c);
-int my_put_nbr_in_list(linked_list_t **list, int nbr);
-int my_put_str_in_list(linked_list_t **list, char *str);
-void my_concat_list(linked_list_t **begin1, linked_list_t *begin2);
-void my_free_list(linked_list_t **list);
-void my_rev_list(linked_list_t **begin);
-char *my_list_to_string(linked_list_t *list);
+list_t *my_list(int nb_element, ...);
+int my_list_size(list_t *begin);
+int my_put_in_list(list_t **list, long data);
+int my_append_to_list(list_t **list, long data);
+void my_concat_list(list_t **begin1, list_t *begin2);
+void my_free_list(list_t **list, int free_str);
+void my_rev_list(list_t **begin);
+char *my_list_to_str(list_t *list);
+char *my_concat_str_list(list_t *begin);
+list_t *my_node(list_t *begin, int i);
+void my_delete_node(list_t **list, int i, int free_str);
+void my_delete_node_from_data(list_t **list, long data, int free_str);
 
 #endif

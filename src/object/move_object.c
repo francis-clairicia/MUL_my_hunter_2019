@@ -15,10 +15,8 @@ void move_object(object_t *object, float x_move, float y_move)
     object->pos = sfSprite_getPosition(object->sprite);
 }
 
-void set_pos_object(object_t *object, float x, float y)
+void set_pos_object(object_t *object, sfVector2f position)
 {
-    sfVector2f position = {x, y};
-
     sfSprite_setPosition(object->sprite, position);
     object->pos = position;
 }

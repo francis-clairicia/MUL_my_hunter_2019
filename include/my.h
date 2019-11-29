@@ -5,11 +5,11 @@
 ** Contains the prototypes of all functions in libmy.a
 */
 
-#include <stdlib.h>
-#include <unistd.h>
-
 #ifndef HEADER_MY_H
 #define HEADER_MY_H
+
+#include <stdlib.h>
+#include <unistd.h>
 
 void my_putchar(char c);
 int my_isneg(int nb);
@@ -46,7 +46,7 @@ char *my_strncat(char *dest, char const *src, int nb);
 char *my_strdup(char const *src);
 char *my_strdup_char(char c);
 char *my_nbr_to_str(int nb);
-int my_nbr_len(int nb);
+int my_nbr_len(long nb);
 int my_find_char(char const *str, char c);
 char *convert_base(char const *nbr, char const *base_from, char const *base_to);
 
