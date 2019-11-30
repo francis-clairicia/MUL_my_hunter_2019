@@ -9,7 +9,9 @@
 
 void add_duck_to_list(list_t *duck_list, int duck_speed)
 {
-    my_put_in_list(&duck_list, (long)init_duck(duck_speed));
+    int nb_duck = my_list_size(duck_list);
+
+    my_append_to_list(&duck_list, (long)init_duck(duck_speed, nb_duck + 1));
 }
 
 void move_duck_list(list_t *duck_list, sfVector2u window_size)

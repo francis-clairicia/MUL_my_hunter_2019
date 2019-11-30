@@ -8,16 +8,15 @@
 #include "my_hunter.h"
 #include <stdio.h>
 
-static pointers_t *init_all_pointers(void)
+static pointers_t *init_all_pointers(game_t game)
 {
     pointers_t *ptrs = malloc(sizeof(pointers_t));
 
     ptrs->bg = init_background();
     ptrs->cursor = init_cursor();
-    ptrs->duck_list = my_list(1, (long)init_duck(30));
+    ptrs->duck_list = my_list(1, (long)init_duck(game.duck_speed, 1));
     ptrs->score = init_score();
-    ptrs->shot = init_shot();
-    ptrs->life = init_life(3);
+    ptrs->life = init_life(game.default_nb_lifes);
     return (ptrs);
 }
 
@@ -39,18 +38,17 @@ static void defeated(sfRenderWindow *window)
 }
 
 static void draw_all_objects(sfRenderWindow *window, pointers_t *ptrs,
-    int game_continue)
+    int stop)
 {
     sfRenderWindow_clear(window, sfColor_fromRGB(94, 204, 236));
-    if (game_continue)
+    if (!stop)
         draw_duck_list(window, ptrs->duck_list);
     draw_background(window, ptrs->bg);
     draw_score(window, ptrs->score);
-    draw_shot(window, ptrs->shot);
     draw_life(window, ptrs->life);
-    draw_cursor(window, ptrs->cursor);
-    if (!game_continue)
+    if (stop)
         defeated(window);
+    draw_cursor(window, ptrs->cursor);
 }
 
 static void destroy_all_pointers(pointers_t *ptrs)
@@ -59,25 +57,25 @@ static void destroy_all_pointers(pointers_t *ptrs)
     destroy_cursor(ptrs->cursor);
     destroy_duck_list(ptrs->duck_list);
     destroy_score(ptrs->score);
-    destroy_shot(ptrs->shot);
     destroy_life(ptrs->life);
     free(ptrs);
 }
 
 void my_hunter(sfRenderWindow *window)
 {
-    pointers_t *ptrs = init_all_pointers();
+    game_t game = {1, 2, 2, 3, 0, 1};
+    pointers_t *ptrs = init_all_pointers(game);
     sfClock *clock = sfClock_create();
-    int game_continue = 1;
 
     sfRenderWindow_setMouseCursorVisible(window, sfFalse);
     while (sfRenderWindow_isOpen(window)) {
-        draw_all_objects(window, ptrs, game_continue);
+        draw_all_objects(window, ptrs, game.stop);
         sfRenderWindow_display(window);
         if (elapsed_time(100, clock))
             animate_duck_list(ptrs->duck_list);
-        analyse_events(window, ptrs);
-        game_continue = manage_gameplay(ptrs);
+        analyse_events(window, ptrs, &game);
+        if (!game.stop)
+            manage_gameplay(ptrs, &game);
     }
     sfClock_destroy(clock);
     destroy_all_pointers(ptrs);

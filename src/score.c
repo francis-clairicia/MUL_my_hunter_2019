@@ -18,7 +18,7 @@ score_t *init_score(void)
     score->hit_bar = create_object(hit_info, 1);
     score->duck_size = 8;
     score->width = 33;
-    set_score(score, 0);
+    set_score(score, 1);
     return (score);
 }
 

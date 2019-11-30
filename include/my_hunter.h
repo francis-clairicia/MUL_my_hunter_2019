@@ -65,6 +65,7 @@ typedef struct duck
     object_t *fly;
     object_t *hit;
     object_t *fall;
+    int id;
     sfVector2f move;
     int status;
     int hit_value;
@@ -72,7 +73,7 @@ typedef struct duck
     int out_of_screen;
 } duck_t;
 
-duck_t *init_duck(int speed);
+duck_t *init_duck(int speed, int id);
 void destroy_duck(duck_t *duck);
 void animate_duck(duck_t *duck);
 void move_duck(duck_t *duck, sfVector2u window_size);
@@ -89,6 +90,8 @@ void move_duck_list(list_t *duck_list, sfVector2u window_size);
 void animate_duck_list(list_t *duck_list);
 void draw_duck_list(sfRenderWindow *window, list_t *duck_list);
 void destroy_duck_list(list_t *duck_list);
+void reset_all_ducks(list_t *duck_list);
+void set_all_ducks_speed(list_t *duck_list, int speed);
 
 typedef struct score
 {
@@ -114,19 +117,6 @@ void destroy_cursor(cursor_t *cursor);
 void draw_cursor(sfRenderWindow *window, cursor_t *cursor);
 void move_cursor(cursor_t *cursor, sfVector2i pos);
 
-typedef struct shot
-{
-    object_t *bullets;
-    object_t *shot_flag;
-    int shot_remaining;
-} shot_t;
-
-shot_t *init_shot(void);
-void destroy_shot(shot_t *shot);
-void draw_shot(sfRenderWindow *window, shot_t *shot);
-void decrease_bullets(shot_t *shot);
-void set_remaining_shots(shot_t *shot, int nb);
-
 typedef struct life
 {
     int nb_lifes;
@@ -144,13 +134,22 @@ typedef struct pointers
     cursor_t *cursor;
     list_t *duck_list;
     score_t *score;
-    shot_t *shot;
     life_t *life;
 } pointers_t;
 
+typedef struct game
+{
+    int duck_nb;
+    int duck_speed;
+    int default_speed;
+    int default_nb_lifes;
+    int stop;
+    int level;
+} game_t;
+
 void my_hunter(sfRenderWindow *window);
-void analyse_events(sfRenderWindow *window, pointers_t *ptrs);
+void analyse_events(sfRenderWindow *window, pointers_t *ptrs, game_t *game);
 void manage_mouse_click(sfMouseButtonEvent event, pointers_t *ptrs);
-int manage_gameplay(pointers_t *ptrs);
+int manage_gameplay(pointers_t *ptrs, game_t *game);
 
 #endif /* !HEADER_MY_HUNTER */

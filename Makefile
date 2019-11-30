@@ -15,11 +15,11 @@ SRC		=	src/my_hunter.c				\
 			src/duck_status.c			\
 			src/duck_pos.c				\
 			src/duck_list.c				\
+			src/reset_duck_list.c		\
 			src/duck_speed.c			\
 			src/score.c					\
 			src/background.c			\
 			src/cursor.c				\
-			src/shot.c					\
 			src/life.c					\
 			src/object/create_object.c	\
 			src/object/animate_object.c	\

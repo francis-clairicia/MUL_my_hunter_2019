@@ -11,7 +11,7 @@ void default_duck_pos(duck_t *duck)
 {
     sfVector2f position;
 
-    position.x = (duck->fly->rect).width * (-1);
+    position.x = (duck->fly->rect).width * (-1) * duck->id;
     position.y = rand() % 130;
     set_pos_object(duck->object, position);
 }
