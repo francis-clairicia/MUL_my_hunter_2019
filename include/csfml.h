@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.h>
 #include <SFML/System.h>
+#include <SFML/Audio.h>
 #include <stdlib.h>
 
 #ifndef HEADER_CSFML

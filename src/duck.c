@@ -26,6 +26,8 @@ duck_t *init_duck(int speed, int id)
     duck->fly = create_object(duck_info_fly, 3);
     duck->hit = create_object(duck_info_hit, 1);
     duck->fall = create_object(duck_info_fall, 4);
+    duck->sound = sfMusic_createFromFile("sound/duck.ogg");
+    sfMusic_setLoop(duck->sound, sfTrue);
     duck->speed = speed;
     duck->id = id;
     duck_fly(duck);
@@ -37,6 +39,7 @@ void destroy_duck(duck_t *duck)
     destroy_object(duck->fly);
     destroy_object(duck->hit);
     destroy_object(duck->fall);
+    sfMusic_destroy(duck->sound);
     free(duck);
 }
 

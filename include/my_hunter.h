@@ -65,6 +65,7 @@ typedef struct duck
     object_t *fly;
     object_t *hit;
     object_t *fall;
+    sfMusic *sound;
     int id;
     sfVector2f move;
     int status;

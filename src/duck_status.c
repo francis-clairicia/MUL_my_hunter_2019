@@ -20,6 +20,7 @@ void duck_fly(duck_t *duck)
     duck->out_of_screen = 0;
     duck->object = duck->fly;
     default_duck_pos(duck);
+    sfMusic_play(duck->sound);
     (duck->move).x = duck->speed;
     (duck->move).y = 0;
     duck->status = 0;
@@ -29,6 +30,7 @@ void duck_fly(duck_t *duck)
 void duck_hit(duck_t *duck)
 {
     change_duck(duck, duck->hit);
+    sfMusic_stop(duck->sound);
     (duck->move).x = 1;
     (duck->move).y = 0;
     duck->status = 2;
@@ -48,4 +50,5 @@ void duck_stop(duck_t *duck)
     (duck->move).x = 0;
     (duck->move).y = 0;
     duck->out_of_screen = 1;
+    sfMusic_stop(duck->sound);
 }

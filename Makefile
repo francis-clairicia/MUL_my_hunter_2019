@@ -45,7 +45,7 @@ lib:
 	make -s -C ./lib/my
 
 $(NAME):	lib $(OBJ)
-	gcc -o $(NAME) $(OBJ) -L./lib -lmy -lcsfml-system -lcsfml-graphics
+	gcc -o $(NAME) $(OBJ) -L./lib -lmy -lcsfml-system -lcsfml-graphics -lcsfml-audio
 	rm -f $(OBJ)
 
 tests_run:	lib
